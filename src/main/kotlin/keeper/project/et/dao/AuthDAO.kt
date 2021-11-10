@@ -1,6 +1,7 @@
 package keeper.project.et.dao
 
 import keeper.project.et.dto.request.auth.AccessRequestDTO
+import keeper.project.et.dto.request.auth.SignUpDTO
 import keeper.project.et.dto.response.auth.AccessResponseDTO
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -10,22 +11,41 @@ class AuthDAO : SuperDAO() {
 
     fun getAccessInfo(accessRequestDTO: AccessRequestDTO): AccessResponseDTO? {
 
-        val mapper = RowMapper<AccessResponseDTO> {
-            rs, _ ->
+        val mapper = RowMapper<AccessResponseDTO> { rs, _ ->
             AccessResponseDTO(
                 rs.getString("userId"),
                 rs.getString("userPw")
             )
         }
 
-        val sql = "select userId, userPw from user_info where userId = '${accessRequestDTO.userId}' and userPw = '${accessRequestDTO.userPw}'"
+        val sql =
+            "select user_id, user_pw from user_info where user_id = '${accessRequestDTO.userId}' and user_pw = '${accessRequestDTO.userPw}'"
 
         return try {
-            db.queryForObject(sql,mapper)
-        }catch (e : Exception){
+            db.queryForObject(sql, mapper)
+        } catch (e: Exception) {
             println(e)
             throw e
         }
+    }
+
+    fun setUserInfo(signUpDTO: SignUpDTO): Int? {
+
+        val values =
+            "'${signUpDTO.userId}', '${signUpDTO.userPw}', '${signUpDTO.userEmail}', '${signUpDTO.userName}', '${signUpDTO.userBirth}', '${signUpDTO.userTel}'"
+        val sql =
+            "insert into user_info (user_id, user_pw, user_email, user_name, user_birth, user_tel) values ($values)"
+
+        return try {
+            db.let {
+                it.execute(sql)
+                it.queryForObject("select max(id) from user_info", Int::class.java)
+            }
+        } catch (e: Exception) {
+            println(e)
+            throw e
+        }
+
     }
 
 }
