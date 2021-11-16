@@ -27,4 +27,13 @@ class LoginController {
         return authService.signUpService(signUpDTO)
     }
 
+    @PostMapping("/find/id")
+    fun findUserIdController(){
+
+    }
+
+    @PostMapping("/find/pw")
+    fun findUserPwController(){
+
+    }
 }
