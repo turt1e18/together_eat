@@ -1,6 +1,7 @@
 package keeper.project.et.dao
 
 import keeper.project.et.dto.request.auth.AccessRequestDTO
+import keeper.project.et.dto.request.auth.FindInfoDTO
 import keeper.project.et.dto.request.auth.SignUpDTO
 import keeper.project.et.dto.response.auth.AccessResponseDTO
 import org.springframework.jdbc.core.RowMapper
@@ -46,6 +47,16 @@ class AuthDAO : SuperDAO() {
             throw e
         }
 
+    }
+
+    fun getUserId(findInfoDTO: FindInfoDTO): String? {
+        val sql = "select user_id from user_info where user_id = '${findInfoDTO.userEmail}' and user_pw = '${findInfoDTO.userTel}'"
+        return try{
+            db.queryForObject(sql,String::class.java)
+        }catch (e : Exception){
+            println(e)
+            throw e
+        }
     }
 
 }
