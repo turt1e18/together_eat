@@ -2,7 +2,9 @@ package keeper.project.et.controller
 
 import keeper.project.et.dto.Message
 import keeper.project.et.dto.request.auth.AccessRequestDTO
+import keeper.project.et.dto.request.auth.FindInfoDTO
 import keeper.project.et.dto.request.auth.SignUpDTO
+import keeper.project.et.dto.response.auth.ResponseIdDTO
 import keeper.project.et.service.AuthService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -28,8 +30,8 @@ class LoginController {
     }
 
     @PostMapping("/find/id")
-    fun findUserIdController(){
-
+    fun findUserIdController(@RequestBody findInfoDTO: FindInfoDTO): ResponseEntity<ResponseIdDTO> {
+        return authService.findIdService(findInfoDTO)
     }
 
     @PostMapping("/find/pw")

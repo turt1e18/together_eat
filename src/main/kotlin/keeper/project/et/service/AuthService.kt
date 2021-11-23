@@ -5,6 +5,7 @@ import keeper.project.et.dto.Message
 import keeper.project.et.dto.request.auth.AccessRequestDTO
 import keeper.project.et.dto.request.auth.FindInfoDTO
 import keeper.project.et.dto.request.auth.SignUpDTO
+import keeper.project.et.dto.response.auth.ResponseIdDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -41,11 +42,12 @@ class AuthService {
         }
     }
 
-    fun findIdService(findInfoDTO: FindInfoDTO) {
+    fun findIdService(findInfoDTO: FindInfoDTO): ResponseEntity<ResponseIdDTO> {
         return try {
             val result = authDAO.getUserId(findInfoDTO).toString()
+            ResponseEntity.status(200).body(ResponseIdDTO(result))
         } catch (e: Exception){
-
+            ResponseEntity.status(400).body(ResponseIdDTO(userId="0", msg = "testTest"))
         }
     }
 }
