@@ -8,10 +8,7 @@ import keeper.project.et.dto.response.auth.ResponseIdDTO
 import keeper.project.et.service.AuthService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class LoginController {
@@ -24,7 +21,7 @@ class LoginController {
         return authService.loginService(accessRequestDTO)
     }
 
-    @PostMapping("/addUser")
+    @PutMapping("/addUser")
     fun signUpController(@RequestBody signUpDTO: SignUpDTO): ResponseEntity<Message> {
         return authService.signUpService(signUpDTO)
     }

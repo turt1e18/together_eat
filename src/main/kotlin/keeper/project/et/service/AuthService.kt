@@ -8,10 +8,13 @@ import keeper.project.et.dto.request.auth.SignUpDTO
 import keeper.project.et.dto.response.auth.ResponseIdDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class AuthService {
+
+    val encoder = BCryptPasswordEncoder()
 
     @Autowired
     lateinit var authDAO: AuthDAO
@@ -21,7 +24,7 @@ class AuthService {
             val checkInfo = authDAO.getAccessInfo(accessRequestDTO)
 
             if (checkInfo?.userId == accessRequestDTO.userId
-                && checkInfo.userPw == accessRequestDTO.userPw
+                && encoder.matches(accessRequestDTO.userPw,checkInfo.userPw)
             ) {
                 ResponseEntity.status(200).body(Message("Success"))
             } else {
@@ -35,6 +38,7 @@ class AuthService {
 
     fun signUpService(signUpDTO: SignUpDTO): ResponseEntity<Message> {
         return try {
+            signUpDTO.userPw = encoder.encode(signUpDTO.userPw)
             val result = authDAO.setUserInfo(signUpDTO).toString()
             ResponseEntity.status(200).body(Message(result))
         } catch (e: Exception) {
@@ -44,7 +48,7 @@ class AuthService {
 
     fun findIdService(findInfoDTO: FindInfoDTO): ResponseEntity<ResponseIdDTO> {
         return try {
-            val result = authDAO.getUserId(findInfoDTO).toString()
+            val result = authDAO.getUserIdWithTel(findInfoDTO).toString()
             ResponseEntity.status(200).body(ResponseIdDTO(result))
         } catch (e: Exception){
             ResponseEntity.status(400).body(ResponseIdDTO(userId="0", msg = "testTest"))
