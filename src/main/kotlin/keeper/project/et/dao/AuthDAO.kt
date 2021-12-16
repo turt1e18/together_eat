@@ -33,9 +33,9 @@ class AuthDAO : SuperDAO() {
     fun setUserInfo(signUpDTO: SignUpDTO): Int? {
 
         val values =
-            "'${signUpDTO.userId}', '${signUpDTO.userPw}', '${signUpDTO.userEmail}', '${signUpDTO.userName}', '${signUpDTO.userBirth}', '${signUpDTO.userTel}'"
+            "'${signUpDTO.userId}', '${signUpDTO.userPw}', '${signUpDTO.userEmail}', '${signUpDTO.userName}', '${signUpDTO.userTel}'"
         val sql =
-            "insert into user_info (user_id, user_pw, user_email, user_name, user_birth, user_tel) values ($values)"
+            "insert into user_info (user_id, user_pw, user_email, user_name, user_tel) values ($values)"
 
         return try {
             db.let {
@@ -49,8 +49,8 @@ class AuthDAO : SuperDAO() {
 
     }
 
-    fun getUserId(findInfoDTO: FindInfoDTO): String? {
-        val sql = "select user_id from user_info where user_id = '${findInfoDTO.userEmail}' and user_pw = '${findInfoDTO.userTel}'"
+    fun getUserIdWithTel(findInfoDTO: FindInfoDTO): String? {
+        val sql = "select user_id from user_info where user_tel = '${findInfoDTO.userTel}'"
         return try{
             db.queryForObject(sql,String::class.java)
         }catch (e : Exception){
