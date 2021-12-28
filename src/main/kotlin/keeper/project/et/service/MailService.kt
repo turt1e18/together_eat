@@ -1,7 +1,9 @@
 package keeper.project.et.service
 
+import keeper.project.et.dao.MailDAO
 import keeper.project.et.dto.MailDTO
 import keeper.project.et.dto.Message
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
@@ -11,6 +13,14 @@ import javax.mail.internet.MimeMessage
 
 @Service
 class MailService(val emailSender: JavaMailSender) {
+
+    @Autowired
+    lateinit var mailDAO: MailDAO
+
+    fun findUserMail(email:String): Boolean {
+        val emailCheck = mailDAO.getUserEmail(email)
+        return email == emailCheck
+    }
 
     fun random(): String = List(6) {
         (('a'..'z') + ('A'..'Z') + ('0'..'9')).random()
