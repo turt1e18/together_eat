@@ -21,6 +21,13 @@ class LoginController {
         return authService.loginService(accessRequestDTO)
     }
 
+    // test
+    @GetMapping("/login")
+    fun testLoginController(@RequestParam("userId")id : String, @RequestParam("userPw")pw:String): ResponseEntity<Message>? {
+        val accessRequestDTO = AccessRequestDTO(id,pw)
+        return authService.loginService(accessRequestDTO)
+    }
+
     @PutMapping("/addUser")
     fun signUpController(@RequestBody signUpDTO: SignUpDTO): ResponseEntity<Message> {
         return authService.signUpService(signUpDTO)
