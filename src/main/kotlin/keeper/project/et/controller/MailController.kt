@@ -1,5 +1,5 @@
 package keeper.project.et.controller
-
+/*
 import keeper.project.et.dto.MailDTO
 import keeper.project.et.dto.Message
 import keeper.project.et.service.MailService
@@ -24,3 +24,4 @@ class MailController {
     }
 
 }
+*/

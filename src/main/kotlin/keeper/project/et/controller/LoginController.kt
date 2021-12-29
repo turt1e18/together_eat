@@ -16,19 +16,26 @@ class LoginController {
     @Autowired
     lateinit var authService : AuthService
 
-    @PostMapping("/login")
+    // home test
+    @GetMapping("/")
+    fun hello(): ResponseEntity<String>{
+        var msg = "포트포워딩 테스트용";
+        return ResponseEntity.ok(msg);
+    }
+
+    @PostMapping("/users/login")
     fun loginController(@RequestBody accessRequestDTO: AccessRequestDTO): ResponseEntity<Message>? {
         return authService.loginService(accessRequestDTO)
     }
 
     // test
-    @GetMapping("/login")
+    @GetMapping("/users/login")
     fun testLoginController(@RequestParam("userId")id : String, @RequestParam("userPw")pw:String): ResponseEntity<Message>? {
         val accessRequestDTO = AccessRequestDTO(id,pw)
         return authService.loginService(accessRequestDTO)
     }
 
-    @PutMapping("/addUser")
+    @PutMapping("/users/register")
     fun signUpController(@RequestBody signUpDTO: SignUpDTO): ResponseEntity<Message> {
         return authService.signUpService(signUpDTO)
     }

@@ -14,8 +14,8 @@ class AuthDAO : SuperDAO() {
 
         val mapper = RowMapper<AccessResponseDTO> { rs, _ ->
             AccessResponseDTO(
-                rs.getString("userId"),
-                rs.getString("userPw")
+                rs.getString("user_id"),
+                rs.getString("user_pw")
             )
         }
 
