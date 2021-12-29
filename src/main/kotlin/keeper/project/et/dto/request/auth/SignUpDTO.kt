@@ -1,11 +1,11 @@
 package keeper.project.et.dto.request.auth
 
 data class SignUpDTO(
-    val userId : String,
-    var userPw : String,
+    val userID : String,
+    var userPW : String,
     val userEmail : String,
     val userName : String,
-    val userTel : String
+    val userPhone : String
 )
 
     // POST Method

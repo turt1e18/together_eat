@@ -30,7 +30,7 @@ class LoginController {
 
     // test
     @GetMapping("/users/login")
-    fun testLoginController(@RequestParam("userId")id : String, @RequestParam("userPw")pw:String): ResponseEntity<Message>? {
+    fun testLoginController(@RequestParam("userID")id : String, @RequestParam("userPW")pw:String): ResponseEntity<Message>? {
         val accessRequestDTO = AccessRequestDTO(id,pw)
         return authService.loginService(accessRequestDTO)
     }
