@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 import java.lang.RuntimeException
 import javax.mail.internet.MimeMessage
-/*
+
 @Service
 class MailService(val emailSender: JavaMailSender) {
 
@@ -52,4 +52,3 @@ class MailService(val emailSender: JavaMailSender) {
         helper.setText(mail.text.toString())
     }
 }
-*/
