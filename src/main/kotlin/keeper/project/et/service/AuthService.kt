@@ -23,8 +23,8 @@ class AuthService {
         return try {
             val checkInfo = authDAO.getAccessInfo(accessRequestDTO)
 
-            if (checkInfo?.userId == accessRequestDTO.userId
-                && encoder.matches(accessRequestDTO.userPw,checkInfo.userPw)
+            if (checkInfo?.userID == accessRequestDTO.userID
+                && encoder.matches(accessRequestDTO.userPW, checkInfo.userPW)
             ) {
                 ResponseEntity.status(200).body(Message("Success"))
             } else {
@@ -38,7 +38,7 @@ class AuthService {
 
     fun signUpService(signUpDTO: SignUpDTO): ResponseEntity<Message> {
         return try {
-            signUpDTO.userPw = encoder.encode(signUpDTO.userPw)
+            signUpDTO.userPW = encoder.encode(signUpDTO.userPW)
             val result = authDAO.setUserInfo(signUpDTO).toString()
             ResponseEntity.status(200).body(Message(result))
         } catch (e: Exception) {
@@ -51,7 +51,7 @@ class AuthService {
             val result = authDAO.getUserIdWithTel(findInfoDTO).toString()
             ResponseEntity.status(200).body(ResponseIdDTO(result))
         } catch (e: Exception){
-            ResponseEntity.status(400).body(ResponseIdDTO(userId="0", msg = "testTest"))
+            ResponseEntity.status(400).body(ResponseIdDTO(userID="0", msg = "testTest"))
         }
     }
 }
