@@ -1,7 +1,8 @@
 package keeper.project.et.controller
 
+import keeper.project.et.dto.DataSet
 import keeper.project.et.dto.Message
-import keeper.project.et.dto.request.auth.AccessRequestDTO
+import keeper.project.et.dto.request.auth.AccessLoginDTO
 import keeper.project.et.dto.request.auth.FindInfoDTO
 import keeper.project.et.dto.request.auth.SignUpDTO
 import keeper.project.et.dto.response.auth.ResponseIdDTO
@@ -14,39 +15,63 @@ import org.springframework.web.bind.annotation.*
 class LoginController {
 
     @Autowired
-    lateinit var authService : AuthService
+    lateinit var authService: AuthService
 
     // home test
     @GetMapping("/")
-    fun hello(): ResponseEntity<String>{
+    fun hello(): ResponseEntity<String> {
         var msg = "포트포워딩 테스트용";
         return ResponseEntity.ok(msg);
     }
 
     @PostMapping("/users/login")
-    fun loginController(@RequestBody accessRequestDTO: AccessRequestDTO): ResponseEntity<Message>? {
-        return authService.loginService(accessRequestDTO)
+    fun loginController(@RequestBody accessLoginDTO: AccessLoginDTO): ResponseEntity<Any> {
+        return authService.loginService(accessLoginDTO)
     }
 
     // test
     @GetMapping("/users/login")
-    fun testLoginController(@RequestParam("userID")id : String, @RequestParam("userPW")pw:String): ResponseEntity<Message>? {
-        val accessRequestDTO = AccessRequestDTO(id,pw)
+    fun testLoginController(
+        @RequestParam("userID") id: String,
+        @RequestParam("userPW") pw: String
+    ): ResponseEntity<Any> {
+        val accessRequestDTO = AccessLoginDTO(id, pw)
         return authService.loginService(accessRequestDTO)
     }
 
     @PutMapping("/users/register")
-    fun signUpController(@RequestBody signUpDTO: SignUpDTO): ResponseEntity<Message> {
+    fun signUpController(@RequestBody signUpDTO: SignUpDTO): ResponseEntity<Any> {
         return authService.signUpService(signUpDTO)
     }
 
-    @PostMapping("/find/id")
-    fun findUserIdController(@RequestBody findInfoDTO: FindInfoDTO): ResponseEntity<ResponseIdDTO> {
+    @GetMapping("/check/name")
+    fun checkUserName(@RequestParam("userName") userName: String): ResponseEntity<DataSet> {
+        return authService.duplicateCheckUserName(userName)
+    }
+
+    @GetMapping("/check/id")
+    fun checkUserID(@RequestParam("userID") userID: String): ResponseEntity<DataSet> {
+        return authService.duplicateCheckUserID(userID)
+    }
+
+    @GetMapping("/check/email")
+    fun checkUserEmail(@RequestParam("userEmail") userEmail: String): ResponseEntity<DataSet> {
+        return authService.duplicateCheckUserEmail(userEmail)
+    }
+
+    /**
+     *
+     * ID/PW 찾기 부분 공사중
+     *
+     */
+
+    @PostMapping("/find/withID")
+    fun findUserIdController(@RequestBody findInfoDTO: FindInfoDTO): ResponseEntity<Any> {
         return authService.findIdService(findInfoDTO)
     }
 
-    @PostMapping("/find/pw")
-    fun findUserPwController(){
+    @PostMapping("/find/withPW")
+    fun findUserPwController() {
 
     }
 }
