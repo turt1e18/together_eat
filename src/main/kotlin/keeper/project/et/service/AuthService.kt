@@ -46,77 +46,77 @@ class AuthService {
 
     }
 
-    fun signUpService(signUpDTO: SignUpDTO): ResponseEntity<Any> {
-        dataResult = mutableListOf()
-        return try {
-            signUpDTO.userPW = encoder.encode(signUpDTO.userPW)
-            val result = authDAO.setUserInfo(signUpDTO).toString()
-            // ResponseEntity.status(200).body(DataSet(result))
-            dataResult.add(Message("success"))
-            ResponseEntity.status(200).body(DataSet(dataResult))
-        } catch (e: Exception) {
-            dataResult.add(Message("failed"))
-            ResponseEntity.status(403).body(DataSet(dataResult))
-        }
-    }
-
-    fun duplicateCheckUserID(value: String): ResponseEntity<DataSet> {
-        val resultObject = DuplicateCheckDTO(authDAO.checkUserID(value))
-        dataResult = mutableListOf()
-        return if (resultObject.result) {
-            // ResponseEntity.status(200).body(DataSet(resultObject))
-            dataResult.add(Message("failed"))
-            ResponseEntity.status(200).body(DataSet(dataResult))
-        }
-        else{
-            dataResult.add(Message("success"))
-            ResponseEntity.status(400).body(DataSet(dataResult))
-        }
-    }
-
-    fun duplicateCheckUserName(value: String): ResponseEntity<DataSet> {
-        val resultObject = DuplicateCheckDTO(authDAO.checkUserName(value))
-        dataResult = mutableListOf()
-        return if (resultObject.result) {
-            // ResponseEntity.status(200).body(DataSet(resultObject))
-            dataResult.add(Message("failed"))
-            ResponseEntity.status(200).body(DataSet(dataResult))
-        }
-        else{
-            dataResult.add(Message("success"))
-            ResponseEntity.status(400).body(DataSet(dataResult))
-        }
-    }
-
-    fun duplicateCheckUserEmail(value: String): ResponseEntity<DataSet> {
-        val resultObject = DuplicateCheckDTO(authDAO.checkUserEmail(value))
-        dataResult = mutableListOf()
-        return if (resultObject.result) {
-            // ResponseEntity.status(200).body(DataSet(resultObject))
-            dataResult.add(Message("failed"))
-            ResponseEntity.status(200).body(DataSet(dataResult))
-        }
-        else{
-            dataResult.add(Message("success"))
-            ResponseEntity.status(400).body(DataSet(dataResult))
-        }
-    }
-
-    fun findIDWithEmail(email: String): ResponseEntity<Any> {
-        return try{
-            val result = ResponseIdDTO(authDAO.getUserIdWithEmail(email))
-            ResponseEntity.status(200).body(DataSet(result))
-        }catch (e : DataAccessException){
-            ResponseEntity.status(400).body(DataSet(Message("Wrong Email")))
-        }
-    }
-
-    fun changePwWithID(id:String, pw:String): ResponseEntity<Any> {
-        return try {
-            authDAO.resetUserPW(id, encoder.encode(pw))
-            ResponseEntity.status(200).body(DataSet(Message("Success")))
-        }catch (e : DataAccessException){
-            ResponseEntity.status(400).body(DataSet(Message("Wrong Value")))
-        }
-    }
+//    fun signUpService(signUpDTO: SignUpDTO): ResponseEntity<Any> {
+//        dataResult = mutableListOf()
+//        return try {
+//            signUpDTO.userPW = encoder.encode(signUpDTO.userPW)
+//            val result = authDAO.setUserInfo(signUpDTO).toString()
+//            // ResponseEntity.status(200).body(DataSet(result))
+//            dataResult.add(Message("success"))
+//            ResponseEntity.status(200).body(DataSet(dataResult))
+//        } catch (e: Exception) {
+//            dataResult.add(Message("failed"))
+//            ResponseEntity.status(403).body(DataSet(dataResult))
+//        }
+//    }
+//
+//    fun duplicateCheckUserID(value: String): ResponseEntity<DataSet> {
+//        val resultObject = DuplicateCheckDTO(authDAO.checkUserID(value))
+//        dataResult = mutableListOf()
+//        return if (resultObject.result) {
+//            // ResponseEntity.status(200).body(DataSet(resultObject))
+//            dataResult.add(Message("failed"))
+//            ResponseEntity.status(200).body(DataSet(dataResult))
+//        }
+//        else{
+//            dataResult.add(Message("success"))
+//            ResponseEntity.status(400).body(DataSet(dataResult))
+//        }
+//    }
+//
+//    fun duplicateCheckUserName(value: String): ResponseEntity<DataSet> {
+//        val resultObject = DuplicateCheckDTO(authDAO.checkUserName(value))
+//        dataResult = mutableListOf()
+//        return if (resultObject.result) {
+//            // ResponseEntity.status(200).body(DataSet(resultObject))
+//            dataResult.add(Message("failed"))
+//            ResponseEntity.status(200).body(DataSet(dataResult))
+//        }
+//        else{
+//            dataResult.add(Message("success"))
+//            ResponseEntity.status(400).body(DataSet(dataResult))
+//        }
+//    }
+//
+//    fun duplicateCheckUserEmail(value: String): ResponseEntity<DataSet> {
+//        val resultObject = DuplicateCheckDTO(authDAO.checkUserEmail(value))
+//        dataResult = mutableListOf()
+//        return if (resultObject.result) {
+//            // ResponseEntity.status(200).body(DataSet(resultObject))
+//            dataResult.add(Message("failed"))
+//            ResponseEntity.status(200).body(DataSet(dataResult))
+//        }
+//        else{
+//            dataResult.add(Message("success"))
+//            ResponseEntity.status(400).body(DataSet(dataResult))
+//        }
+//    }
+//
+//    fun findIDWithEmail(email: String): ResponseEntity<Any> {
+//        return try{
+//            val result = ResponseIdDTO(authDAO.getUserIdWithEmail(email))
+//            ResponseEntity.status(200).body(DataSet(result))
+//        }catch (e : DataAccessException){
+//            ResponseEntity.status(400).body(DataSet(Message("Wrong Email")))
+//        }
+//    }
+//
+//    fun changePwWithID(id:String, pw:String): ResponseEntity<Any> {
+//        return try {
+//            authDAO.resetUserPW(id, encoder.encode(pw))
+//            ResponseEntity.status(200).body(DataSet(Message("Success")))
+//        }catch (e : DataAccessException){
+//            ResponseEntity.status(400).body(DataSet(Message("Wrong Value")))
+//        }
+//    }
 }

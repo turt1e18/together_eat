@@ -7,18 +7,18 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class MailController {
-
-    @Autowired
-    lateinit var mailService: MailService
-
-    @PostMapping("/send")
-    fun sendMailController(@RequestBody mailDTO: MailDTO): ResponseEntity<Any> {
-       return mailService.sendMail(mailDTO)
-    }
-
-    @GetMapping("/check/mail/code")
-    fun checkMailCodeController(@RequestParam("userEmail")userEmail:String): ResponseEntity<Any> {
-        return mailService.checkOTPCode(userEmail)
-    }
+//
+//    @Autowired
+//    lateinit var mailService: MailService
+//
+//    @PostMapping("/send")
+//    fun sendMailController(@RequestBody mailDTO: MailDTO): ResponseEntity<Any> {
+//       return mailService.sendMail(mailDTO)
+//    }
+//
+//    @GetMapping("/check/mail/code")
+//    fun checkMailCodeController(@RequestParam("userEmail")userEmail:String): ResponseEntity<Any> {
+//        return mailService.checkOTPCode(userEmail)
+//    }
 
 }
