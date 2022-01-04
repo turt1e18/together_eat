@@ -36,7 +36,7 @@ class AuthDAO : SuperDAO() {
     fun setUserInfo(signUpDTO: SignUpDTO): Int? {
 
         val values =
-            "'${signUpDTO.userID}', '${signUpDTO.userPW}', '${signUpDTO.userEmail}', '${signUpDTO.userName}', '${signUpDTO.userTel}'"
+            "'${signUpDTO.userID}', '${signUpDTO.userPW}', '${signUpDTO.userEmail}', '${signUpDTO.userName}', '${signUpDTO.userPhone}'"
         val sql =
             "insert into user_info (user_id, user_pw, user_email, user_name, user_tel) values ($values)"
 
