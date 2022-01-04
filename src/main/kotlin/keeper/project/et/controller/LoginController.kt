@@ -28,50 +28,50 @@ class LoginController {
     fun loginController(@RequestBody accessLoginDTO: AccessLoginDTO): ResponseEntity<Any> {
         return authService.loginService(accessLoginDTO)
     }
-
-    // test
-    @GetMapping("/users/login")
-    fun testLoginController(
-        @RequestParam("userID") id: String,
-        @RequestParam("userPW") pw: String
-    ): ResponseEntity<Any> {
-        val accessRequestDTO = AccessLoginDTO(id, pw)
-        return authService.loginService(accessRequestDTO)
-    }
-
-    @PutMapping("/users/register")
-    fun signUpController(@RequestBody signUpDTO: SignUpDTO): ResponseEntity<Any> {
-        return authService.signUpService(signUpDTO)
-    }
-
-    @GetMapping("/check/name")
-    fun checkUserName(@RequestParam("userName") userName: String): ResponseEntity<DataSet> {
-        return authService.duplicateCheckUserName(userName)
-    }
-
-    @GetMapping("/check/id")
-    fun checkUserID(@RequestParam("userID") userID: String): ResponseEntity<DataSet> {
-        return authService.duplicateCheckUserID(userID)
-    }
-
-    @GetMapping("/check/email")
-    fun checkUserEmail(@RequestParam("userEmail") userEmail: String): ResponseEntity<DataSet> {
-        return authService.duplicateCheckUserEmail(userEmail)
-    }
-
-    /**
-     *
-     * ID/PW 찾기 부분 공사중
-     *
-     */
-
-    @GetMapping("/find/id/email")
-    fun findIDWithEmailController(@RequestParam("userEmail")userEmail: String): ResponseEntity<Any> {
-        return authService.findIDWithEmail(userEmail)
-    }
-
-    @GetMapping("/change/pw/email")
-    fun changePwWithController(@RequestParam("userID")userID: String, @RequestParam("userPW")userPW:String): ResponseEntity<Any> {
-        return authService.changePwWithID(userID,userPW)
-    }
+//
+//    // test
+//    @GetMapping("/users/login")
+//    fun testLoginController(
+//        @RequestParam("userID") id: String,
+//        @RequestParam("userPW") pw: String
+//    ): ResponseEntity<Any> {
+//        val accessRequestDTO = AccessLoginDTO(id, pw)
+//        return authService.loginService(accessRequestDTO)
+//    }
+//
+//    @PutMapping("/users/register")
+//    fun signUpController(@RequestBody signUpDTO: SignUpDTO): ResponseEntity<Any> {
+//        return authService.signUpService(signUpDTO)
+//    }
+//
+//    @GetMapping("/check/name")
+//    fun checkUserName(@RequestParam("userName") userName: String): ResponseEntity<DataSet> {
+//        return authService.duplicateCheckUserName(userName)
+//    }
+//
+//    @GetMapping("/check/id")
+//    fun checkUserID(@RequestParam("userID") userID: String): ResponseEntity<DataSet> {
+//        return authService.duplicateCheckUserID(userID)
+//    }
+//
+//    @GetMapping("/check/email")
+//    fun checkUserEmail(@RequestParam("userEmail") userEmail: String): ResponseEntity<DataSet> {
+//        return authService.duplicateCheckUserEmail(userEmail)
+//    }
+//
+//    /**
+//     *
+//     * ID/PW 찾기 부분 공사중
+//     *
+//     */
+//
+//    @GetMapping("/find/id/email")
+//    fun findIDWithEmailController(@RequestParam("userEmail")userEmail: String): ResponseEntity<Any> {
+//        return authService.findIDWithEmail(userEmail)
+//    }
+//
+//    @GetMapping("/change/pw/email")
+//    fun changePwWithController(@RequestParam("userID")userID: String, @RequestParam("userPW")userPW:String): ResponseEntity<Any> {
+//        return authService.changePwWithID(userID,userPW)
+//    }
 }
