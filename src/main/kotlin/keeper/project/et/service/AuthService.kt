@@ -78,12 +78,21 @@ class AuthService {
             ResponseEntity.status(400).body(DataSet(resultObject))
     }
 
-    fun findIdService(findInfoDTO: FindInfoDTO): ResponseEntity<Any> {
+    fun findIDWithEmail(email: String): ResponseEntity<Any> {
+        return try{
+            val result = ResponseIdDTO(authDAO.getUserIdWithEmail(email))
+            ResponseEntity.status(200).body(DataSet(result))
+        }catch (e : DataAccessException){
+            ResponseEntity.status(400).body(DataSet(Message("Wrong Email")))
+        }
+    }
+
+    fun changePwWithID(id:String, pw:String): ResponseEntity<Any> {
         return try {
-            val result = authDAO.getUserIdWithTel(findInfoDTO).toString()
-            ResponseEntity.status(200).body(DataSet(ResponseIdDTO(result)))
-        } catch (e: Exception) {
-            ResponseEntity.status(400).body(DataSet(Message("Error")))
+            authDAO.resetUserPW(id, encoder.encode(pw))
+            ResponseEntity.status(200).body(DataSet(Message("Success")))
+        }catch (e : DataAccessException){
+            ResponseEntity.status(400).body(DataSet(Message("Wrong Value")))
         }
     }
 }

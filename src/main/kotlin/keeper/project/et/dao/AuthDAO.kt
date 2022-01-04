@@ -82,12 +82,20 @@ class AuthDAO : SuperDAO() {
         }
     }
 
-    fun getUserIdWithTel(findInfoDTO: FindInfoDTO): String? {
-        val sql = "select user_id from user_info where user_tel = '${findInfoDTO.userPhone}'"
+    fun getUserIdWithEmail(email: String): String {
+        val sql = "select user_id from user_info where user_email = '$email'"
         return try{
-            db.queryForObject(sql,String::class.java)
-        }catch (e : Exception){
-            println(e)
+            db.queryForObject(sql,String::class.java)!!
+        }catch (e : DataAccessException){
+            throw e
+        }
+    }
+
+    fun resetUserPW(id : String, pw:String){
+        try {
+            val sql = "update user_info set user_pw = '$pw' where user_id = '$id'"
+            db.update(sql)
+        }catch (e : DataAccessException){
             throw e
         }
     }
