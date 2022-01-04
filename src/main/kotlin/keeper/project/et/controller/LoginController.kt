@@ -65,13 +65,13 @@ class LoginController {
      *
      */
 
-    @PostMapping("/find/withID")
-    fun findUserIdController(@RequestBody findInfoDTO: FindInfoDTO): ResponseEntity<Any> {
-        return authService.findIdService(findInfoDTO)
+    @GetMapping("/find/id/email")
+    fun findIDWithEmailController(@RequestParam("userEmail")userEmail: String): ResponseEntity<Any> {
+        return authService.findIDWithEmail(userEmail)
     }
 
-    @PostMapping("/find/withPW")
-    fun findUserPwController() {
-
+    @GetMapping("/change/pw/email")
+    fun changePwWithController(@RequestParam("userID")userID: String, @RequestParam("userPW")userPW:String): ResponseEntity<Any> {
+        return authService.changePwWithID(userID,userPW)
     }
 }
