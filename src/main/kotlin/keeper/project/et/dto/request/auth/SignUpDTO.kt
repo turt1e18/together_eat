@@ -5,7 +5,7 @@ data class SignUpDTO(
     var userPW : String,
     val userEmail : String,
     val userName : String,
-    val userTel : String
+    val userPhone : String
 )
 
     // POST Method

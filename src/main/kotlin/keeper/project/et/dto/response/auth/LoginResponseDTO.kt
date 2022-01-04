@@ -4,4 +4,5 @@ data class LoginResponseDTO(
     val id : Int,
     val userId : String,
     val userName : String,
+    val result: String
 )
