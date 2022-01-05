@@ -4,7 +4,6 @@ import keeper.project.et.dao.AuthDAO
 import keeper.project.et.dto.DataSet
 import keeper.project.et.dto.Message
 import keeper.project.et.dto.request.auth.AccessLoginDTO
-import keeper.project.et.dto.request.auth.FindInfoDTO
 import keeper.project.et.dto.request.auth.SignUpDTO
 import keeper.project.et.dto.response.auth.DuplicateCheckDTO
 import keeper.project.et.dto.response.auth.LoginResponseDTO
@@ -19,7 +18,9 @@ import org.springframework.stereotype.Service
 class AuthService {
 
     val encoder = BCryptPasswordEncoder()
-    var dataResult: MutableList<Any> = mutableListOf()
+    val message = { result : String ->
+        listOf(Message(result))
+    }
 
     @Autowired
     lateinit var authDAO: AuthDAO
@@ -27,96 +28,74 @@ class AuthService {
     fun loginService(accessLoginDTO: AccessLoginDTO): ResponseEntity<Any> {
         return try {
             val checkInfo = authDAO.getAccessInfo(accessLoginDTO)
-            val response = LoginResponseDTO(checkInfo?.id!!, checkInfo.userID, checkInfo.userName, "success")
-            dataResult = mutableListOf()
+            val result = LoginResponseDTO(checkInfo?.id!!, checkInfo.userID, checkInfo.userName, "success")
 
-            if (checkInfo.userID == accessLoginDTO.userID
-                && encoder.matches(accessLoginDTO.userPW, checkInfo.userPW)
-            ) {
-                dataResult.add(response)
-                ResponseEntity.status(200).body(DataSet(dataResult))
+            if (checkInfo.userID == accessLoginDTO.userID && encoder.matches(accessLoginDTO.userPW, checkInfo.userPW)) {
+                ResponseEntity.status(200).body(DataSet(listOf(result)))
             } else {
-                dataResult.add(Message("failed"))
-                ResponseEntity.status(403).body(DataSet(dataResult))
+                ResponseEntity.status(403).body(DataSet(message("fail")))
             }
         } catch (e: Exception) {
-            dataResult.add(Message("failed"))
-            ResponseEntity.status(403).body(DataSet(dataResult))
+            ResponseEntity.status(403).body(DataSet(message("fail")))
         }
 
     }
 
-//    fun signUpService(signUpDTO: SignUpDTO): ResponseEntity<Any> {
-//        dataResult = mutableListOf()
-//        return try {
-//            signUpDTO.userPW = encoder.encode(signUpDTO.userPW)
-//            val result = authDAO.setUserInfo(signUpDTO).toString()
-//            // ResponseEntity.status(200).body(DataSet(result))
-//            dataResult.add(Message("success"))
-//            ResponseEntity.status(200).body(DataSet(dataResult))
-//        } catch (e: Exception) {
-//            dataResult.add(Message("failed"))
-//            ResponseEntity.status(403).body(DataSet(dataResult))
-//        }
-//    }
-//
-//    fun duplicateCheckUserID(value: String): ResponseEntity<DataSet> {
-//        val resultObject = DuplicateCheckDTO(authDAO.checkUserID(value))
-//        dataResult = mutableListOf()
-//        return if (resultObject.result) {
-//            // ResponseEntity.status(200).body(DataSet(resultObject))
-//            dataResult.add(Message("failed"))
-//            ResponseEntity.status(200).body(DataSet(dataResult))
-//        }
-//        else{
-//            dataResult.add(Message("success"))
-//            ResponseEntity.status(400).body(DataSet(dataResult))
-//        }
-//    }
-//
-//    fun duplicateCheckUserName(value: String): ResponseEntity<DataSet> {
-//        val resultObject = DuplicateCheckDTO(authDAO.checkUserName(value))
-//        dataResult = mutableListOf()
-//        return if (resultObject.result) {
-//            // ResponseEntity.status(200).body(DataSet(resultObject))
-//            dataResult.add(Message("failed"))
-//            ResponseEntity.status(200).body(DataSet(dataResult))
-//        }
-//        else{
-//            dataResult.add(Message("success"))
-//            ResponseEntity.status(400).body(DataSet(dataResult))
-//        }
-//    }
-//
-//    fun duplicateCheckUserEmail(value: String): ResponseEntity<DataSet> {
-//        val resultObject = DuplicateCheckDTO(authDAO.checkUserEmail(value))
-//        dataResult = mutableListOf()
-//        return if (resultObject.result) {
-//            // ResponseEntity.status(200).body(DataSet(resultObject))
-//            dataResult.add(Message("failed"))
-//            ResponseEntity.status(200).body(DataSet(dataResult))
-//        }
-//        else{
-//            dataResult.add(Message("success"))
-//            ResponseEntity.status(400).body(DataSet(dataResult))
-//        }
-//    }
-//
-//    fun findIDWithEmail(email: String): ResponseEntity<Any> {
-//        return try{
-//            val result = ResponseIdDTO(authDAO.getUserIdWithEmail(email))
-//            ResponseEntity.status(200).body(DataSet(result))
-//        }catch (e : DataAccessException){
-//            ResponseEntity.status(400).body(DataSet(Message("Wrong Email")))
-//        }
-//    }
-//
-//    fun changePwWithID(id:String, pw:String): ResponseEntity<Any> {
-//        return try {
-//            authDAO.resetUserPW(id, encoder.encode(pw))
-//            ResponseEntity.status(200).body(DataSet(Message("Success")))
-//        }catch (e : DataAccessException){
-//            ResponseEntity.status(400).body(DataSet(Message("Wrong Value")))
-//        }
-//    }
+    fun signUpService(signUpDTO: SignUpDTO): ResponseEntity<Any> {
+        return try {
+            signUpDTO.userPW = encoder.encode(signUpDTO.userPW)
+            val result = authDAO.setUserInfo(signUpDTO).toString()
+            ResponseEntity.status(200).body(DataSet(message("Success")))
+        } catch (e: Exception) {
+            ResponseEntity.status(403).body(DataSet(message("fail")))
+        }
+    }
+
+    fun duplicateCheckUserID(value: String): ResponseEntity<Any> {
+        val resultObject = DuplicateCheckDTO(authDAO.checkUserID(value))
+        return if (!resultObject.result) {
+            ResponseEntity.status(200).body(DataSet(listOf(resultObject)))
+        }
+        else{
+            ResponseEntity.status(400).body(DataSet(listOf(resultObject)))
+        }
+    }
+
+    fun duplicateCheckUserName(value: String): ResponseEntity<DataSet> {
+        val resultObject = DuplicateCheckDTO(authDAO.checkUserName(value))
+        return if (!resultObject.result) {
+            ResponseEntity.status(200).body(DataSet(listOf(resultObject)))
+        }
+        else{
+            ResponseEntity.status(400).body(DataSet(listOf(resultObject)))
+        }
+    }
+
+    fun duplicateCheckUserEmail(value: String): ResponseEntity<DataSet> {
+        val resultObject = DuplicateCheckDTO(authDAO.checkUserEmail(value))
+        return if (!resultObject.result) {
+            ResponseEntity.status(200).body(DataSet(listOf(resultObject)))
+        }
+        else{
+            ResponseEntity.status(400).body(DataSet(listOf(resultObject)))
+        }
+    }
+
+    fun findIDWithEmail(email: String): ResponseEntity<Any> {
+        return try{
+            val result = ResponseIdDTO(authDAO.getUserIdWithEmail(email))
+            ResponseEntity.status(200).body(DataSet(listOf(result)))
+        }catch (e : DataAccessException){
+            ResponseEntity.status(400).body(DataSet(message("fail")))
+        }
+    }
+
+    fun changePwWithID(id:String, pw:String): ResponseEntity<Any> {
+        return try {
+            authDAO.resetUserPW(id, encoder.encode(pw))
+            ResponseEntity.status(200).body(DataSet(message("Success")))
+        }catch (e : DataAccessException){
+            ResponseEntity.status(400).body(DataSet(message("fail")))
+        }
+    }
 }

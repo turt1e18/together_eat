@@ -1,7 +1,6 @@
 package keeper.project.et.dao
 
 import keeper.project.et.dto.request.auth.AccessLoginDTO
-import keeper.project.et.dto.request.auth.FindInfoDTO
 import keeper.project.et.dto.request.auth.SignUpDTO
 import keeper.project.et.dto.db.AccessUserInfoDTO
 import org.springframework.dao.DataAccessException
@@ -52,50 +51,50 @@ class AuthDAO : SuperDAO() {
 
     }
 
-    fun checkUserID(userId :String): Boolean {
-        return try{
+    fun checkUserID(userId: String): Boolean {
+        return try {
             val sql = "select user_id from user_info where user_id = '$userId';"
-            val result = db.queryForObject(sql,String::class.java)!!
+            val result = db.queryForObject(sql, String::class.java)!!
             userId == result
-        }catch (e : DataAccessException){
+        } catch (e: DataAccessException) {
             return false
         }
     }
 
-    fun checkUserName(userName:String): Boolean {
-        return try{
+    fun checkUserName(userName: String): Boolean {
+        return try {
             val sql = "select user_name from user_info where user_name = '$userName';"
-            val result = db.queryForObject(sql,String::class.java)!!
+            val result = db.queryForObject(sql, String::class.java)!!
             userName == result
-        }catch (e : DataAccessException){
+        } catch (e: DataAccessException) {
             return false
         }
     }
 
-    fun checkUserEmail(userEmail:String): Boolean {
-        return try{
+    fun checkUserEmail(userEmail: String): Boolean {
+        return try {
             val sql = "select user_email from user_info where user_email = '$userEmail';"
-            val result = db.queryForObject(sql,String::class.java)!!
+            val result = db.queryForObject(sql, String::class.java)!!
             userEmail == result
-        }catch (e : DataAccessException){
+        } catch (e: DataAccessException) {
             return false
         }
     }
 
     fun getUserIdWithEmail(email: String): String {
         val sql = "select user_id from user_info where user_email = '$email'"
-        return try{
-            db.queryForObject(sql,String::class.java)!!
-        }catch (e : DataAccessException){
+        return try {
+            db.queryForObject(sql, String::class.java)!!
+        } catch (e: DataAccessException) {
             throw e
         }
     }
 
-    fun resetUserPW(id : String, pw:String){
+    fun resetUserPW(id: String, pw: String) {
         try {
             val sql = "update user_info set user_pw = '$pw' where user_id = '$id'"
             db.update(sql)
-        }catch (e : DataAccessException){
+        } catch (e: DataAccessException) {
             throw e
         }
     }
