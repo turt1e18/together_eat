@@ -12,6 +12,11 @@ class PostController {
     @Autowired
     lateinit var postService: PostService
 
+    @GetMapping("/posts")
+    fun getAllPostController(): ResponseEntity<Any> {
+        return postService.getAllPostService()
+    }
+
     @PostMapping("/posts")
     fun uploadPostController(@RequestBody uploadModifyPostDTO: UploadModifyPostDTO): ResponseEntity<Any> {
         return postService.postUploadService(uploadModifyPostDTO)
@@ -20,6 +25,11 @@ class PostController {
     @PutMapping("/posts")
     fun modifyPostController(@RequestBody uploadModifyPostDTO: UploadModifyPostDTO): ResponseEntity<Any> {
         return postService.postModifyService(uploadModifyPostDTO)
+    }
+
+    @GetMapping("/posts/{postNum}")
+    fun getSomePostController(@PathVariable postNum: Int): ResponseEntity<Any> {
+        return postService.getSomePostService(postNum)
     }
 
     @DeleteMapping("/posts/{postNum}")
