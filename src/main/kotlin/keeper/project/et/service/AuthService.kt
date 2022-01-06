@@ -45,7 +45,7 @@ class AuthService {
         return try {
             signUpDTO.userPW = encoder.encode(signUpDTO.userPW)
             val result = authDAO.setUserInfo(signUpDTO).toString()
-            ResponseEntity.status(200).body(DataSet(message("Success")))
+            ResponseEntity.status(200).body(DataSet(message("success")))
         } catch (e: Exception) {
             ResponseEntity.status(403).body(DataSet(message("fail")))
         }
@@ -93,7 +93,7 @@ class AuthService {
     fun changePwWithID(id:String, pw:String): ResponseEntity<Any> {
         return try {
             authDAO.resetUserPW(id, encoder.encode(pw))
-            ResponseEntity.status(200).body(DataSet(message("Success")))
+            ResponseEntity.status(200).body(DataSet(message("success")))
         }catch (e : DataAccessException){
             ResponseEntity.status(400).body(DataSet(message("fail")))
         }
