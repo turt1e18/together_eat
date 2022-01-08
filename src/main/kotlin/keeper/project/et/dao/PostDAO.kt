@@ -12,16 +12,17 @@ import org.springframework.jdbc.core.RowMapper
 class PostDAO : SuperDAO() {
     fun uploadPostInfo(uploadModifyPostDTO: UploadModifyPostDTO): Any {
         val values =
-            "'${uploadModifyPostDTO.userID}', ${uploadModifyPostDTO.postNum}, '${uploadModifyPostDTO.nameStore}', ${uploadModifyPostDTO.postCategory}, '${uploadModifyPostDTO.postTitle}', '${uploadModifyPostDTO.postContent}', '${uploadModifyPostDTO.postURL}', ${uploadModifyPostDTO.costOrderMin}, ${uploadModifyPostDTO.costOrderRemain}, ${1}"
+            "'${uploadModifyPostDTO.userID}', ${uploadModifyPostDTO.postNum}, '${uploadModifyPostDTO.nameStore}', ${uploadModifyPostDTO.postCategory}, '${uploadModifyPostDTO.postTitle}', '${uploadModifyPostDTO.postContent}', '${uploadModifyPostDTO.postURL}', ${uploadModifyPostDTO.costOrderMin}, ${uploadModifyPostDTO.costOrderRemain}, ${1}, '${uploadModifyPostDTO.userName}'"
 
         val sql =
-            "insert into posts (user_id, post_num, name_store, post_category, post_title, post_content, post_url, cost_order_min, cost_order_remain, post_state) values ($values)"
+            "insert into posts (user_id, post_num, name_store, post_category, post_title, post_content, post_url, cost_order_min, cost_order_remain, post_state, user_name) values ($values)"
 
         return try {
             val result = db.update(sql)!!
             result
+
         } catch (e: Exception) {
-            throw(e)
+            e
         }
     }
 
@@ -30,7 +31,6 @@ class PostDAO : SuperDAO() {
             val sql = "delete from posts where post_num = ${postNum};"
             val result = db.update(sql)!!
             result
-
         } catch (e: DataAccessException) {
             throw(e)
         }
@@ -59,7 +59,8 @@ class PostDAO : SuperDAO() {
                 rs.getString("post_url"),
                 rs.getInt("cost_order_min"),
                 rs.getInt("cost_order_remain"),
-                rs.getInt("post_state")
+                rs.getInt("post_state"),
+                rs.getString("user_name")
             )
         }
 
@@ -95,7 +96,8 @@ class PostDAO : SuperDAO() {
                 rs.getInt("cost_order_min"),
                 rs.getInt("cost_order_remain"),
                 rs.getInt("post_state"),
-                rs.getTimestamp("create_date")
+                rs.getTimestamp("create_date"),
+                rs.getString("user_name")
             )
         }
         return try {

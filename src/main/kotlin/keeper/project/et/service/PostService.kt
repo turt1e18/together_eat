@@ -3,7 +3,6 @@ package keeper.project.et.service
 import keeper.project.et.dao.PostDAO
 import keeper.project.et.dto.DataSet
 import keeper.project.et.dto.Message
-import keeper.project.et.dto.request.post.DeletePostDTO
 import keeper.project.et.dto.request.post.UploadModifyPostDTO
 import keeper.project.et.dto.response.post.PostDataSetDTO
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,19 +19,19 @@ class PostService {
     }
 
     fun postUploadService(uploadModifyPostDTO: UploadModifyPostDTO): ResponseEntity<Any> {
-        return try {
-            val resultObejct = postDAO.uploadPostInfo(uploadModifyPostDTO)
+        val resultObject = postDAO.uploadPostInfo(uploadModifyPostDTO)
 
+        return if (resultObject == 1) {
             ResponseEntity.status(200).body(DataSet(message("success")))
-        } catch (e: Exception) {
+        } else {
             ResponseEntity.status(400).body(DataSet(message("fail")))
         }
     }
 
     fun postDeleteService(value: Int): ResponseEntity<Any> {
-        val resultObject = DeletePostDTO(postDAO.deletePostInfo(value))
+        val resultObject = postDAO.deletePostInfo(value)
 
-        return if (resultObject.result == 1) {
+        return if (resultObject == 1) {
             ResponseEntity.status(200).body(DataSet(message("success")))
         }
         else{
