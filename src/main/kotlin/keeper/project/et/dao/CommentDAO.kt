@@ -1,6 +1,5 @@
 package keeper.project.et.dao
 
-import keeper.project.et.dto.request.post.comment.DeleteCommentDTO
 import keeper.project.et.dto.request.post.comment.UploadModifyCommentDTO
 import org.springframework.dao.DataAccessException
 import org.springframework.stereotype.Repository
@@ -31,9 +30,9 @@ class CommentDAO : SuperDAO() {
         }
     }
 
-    fun deleteCommentInfo(deleteCommentDTO: DeleteCommentDTO): Any {
+    fun deleteCommentInfo(com: Int, post: Int): Any {
         val sql =
-            "delete from post_comment where post_num = ${deleteCommentDTO.postNum} & com_num = ${deleteCommentDTO.comNum}"
+            "delete from post_comment where post_num = $post and com_num = $com"
         return try {
             val result = db.update(sql)!!
             result

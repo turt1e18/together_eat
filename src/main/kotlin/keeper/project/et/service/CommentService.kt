@@ -36,4 +36,14 @@ class CommentService {
             ResponseEntity.status(400).body(DataSet(message("fail")))
         }
     }
+
+    fun commentDeleteService(com: Int, post: Int): ResponseEntity<Any>{
+        val resultObject = commentDAO.deleteCommentInfo(com, post)
+
+        return if (resultObject == 1) {
+            ResponseEntity.status(200).body(DataSet(message("success")))
+        } else {
+            ResponseEntity.status(400).body(DataSet(message("fail")))
+        }
+    }
 }
