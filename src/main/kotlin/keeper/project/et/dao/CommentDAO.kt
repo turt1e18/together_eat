@@ -2,6 +2,7 @@ package keeper.project.et.dao
 
 import keeper.project.et.dto.request.post.comment.UploadModifyCommentDTO
 import org.springframework.dao.DataAccessException
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -39,6 +40,26 @@ class CommentDAO : SuperDAO() {
         } catch (e: DataAccessException) {
             throw (e)
         }
+    }
 
+
+    fun cancelCommentInfo(post: Int): Any {
+        val mapper = RowMapper<UploadModifyCommentDTO> { rs, _ ->
+            UploadModifyCommentDTO(
+                rs.getInt("com_num"),
+                rs.getInt("post_num"),
+                rs.getString("com_name"),
+                rs.getString("com_menu"),
+                rs.getInt("com_order_cost"),
+                rs.getString("com_content"),
+                rs.getTimestamp("create_date"),
+            )
+        }
+        return try {
+            val result = db.query("select * from post_comment where post_num = $post",mapper)
+            result
+        } catch (e: DataAccessException) {
+            throw (e)
+        }
     }
 }

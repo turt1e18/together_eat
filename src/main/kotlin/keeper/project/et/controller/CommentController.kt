@@ -26,4 +26,9 @@ class CommentController {
     fun deleteCommentController(@RequestParam("com") com: Int, @RequestParam post: Int): ResponseEntity<Any> {
         return commentService.commentDeleteService(com, post)
     }
+
+    @GetMapping("/posts/comment")
+    fun cancelCommentController(@RequestParam("post") com: Int): ResponseEntity<Any> {
+        return commentService.commentCancelService(com)
+    }
 }
