@@ -1,5 +1,7 @@
 package keeper.project.et.dto.request.post.comment
 
+import java.sql.Timestamp
+
 data class UploadModifyCommentDTO (
    val comNum: Int,
    val postNum: Int,
@@ -7,4 +9,5 @@ data class UploadModifyCommentDTO (
    val comMenu: String,
    val comOrderCost: Int,
    val comContent: String,
+   val comTime: Timestamp?
         )

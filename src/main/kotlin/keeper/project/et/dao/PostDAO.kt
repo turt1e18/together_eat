@@ -1,6 +1,7 @@
 package keeper.project.et.dao
 
 import keeper.project.et.dto.request.post.UploadModifyPostDTO
+import keeper.project.et.dto.request.post.comment.UploadModifyCommentDTO
 import keeper.project.et.dto.response.post.GetPostCategoryDTO
 import keeper.project.et.dto.response.post.GetSomePostDTO
 import org.springframework.dao.DataAccessException
@@ -85,7 +86,7 @@ class PostDAO : SuperDAO() {
     }
 
     fun getSomePost(postNum: Int): Any {
-        val mapper = RowMapper<GetSomePostDTO> { rs, _ ->
+        val postMapper = RowMapper<GetSomePostDTO> { rs, _ ->
             GetSomePostDTO(
                 rs.getInt("post_num"),
                 rs.getString("name_store"),
@@ -100,10 +101,27 @@ class PostDAO : SuperDAO() {
                 rs.getString("user_name")
             )
         }
-        return try {
-            val result = db.query("select * from posts where post_num=${postNum}", mapper)
 
-            result
+        val commentMapper = RowMapper<UploadModifyCommentDTO> { rs, _ ->
+            UploadModifyCommentDTO(
+                rs.getInt("com_num"),
+                rs.getInt("post_num"),
+                rs.getString("com_name"),
+                rs.getString("com_menu"),
+                rs.getInt("com_order_cost"),
+                rs.getString("com_content"),
+                rs.getTimestamp("create_date"),
+            )
+        }
+
+        return try {
+            val post = db.query("select * from posts where post_num=${postNum}", postMapper)
+            val com = db.query("select * from post_comment where post_num=${postNum}", commentMapper)
+            val postComHash = HashMap<String, Any>()
+            postComHash.put("content", post)
+            postComHash.put("comment", com)
+            postComHash
+
         } catch (e: DataAccessException) {
             throw(e)
         }
