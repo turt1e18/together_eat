@@ -33,10 +33,10 @@ class AuthService {
             if (checkInfo.userID == accessLoginDTO.userID && encoder.matches(accessLoginDTO.userPW, checkInfo.userPW)) {
                 ResponseEntity.status(200).body(DataSet(listOf(result)))
             } else {
-                ResponseEntity.status(403).body(DataSet(message("fail")))
+                ResponseEntity.status(400).body(DataSet(message("fail")))
             }
         } catch (e: Exception) {
-            ResponseEntity.status(403).body(DataSet(message("fail")))
+            ResponseEntity.status(400).body(DataSet(message("fail")))
         }
 
     }
@@ -47,7 +47,7 @@ class AuthService {
             val result = authDAO.setUserInfo(signUpDTO).toString()
             ResponseEntity.status(200).body(DataSet(message("success")))
         } catch (e: Exception) {
-            ResponseEntity.status(403).body(DataSet(message("fail")))
+            ResponseEntity.status(400).body(DataSet(message("fail")))
         }
     }
 

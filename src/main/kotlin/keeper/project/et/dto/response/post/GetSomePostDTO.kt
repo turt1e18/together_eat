@@ -13,10 +13,5 @@ data class GetSomePostDTO (
     val costOrderRemain: Int,
     val postState: Int,
     val postUptime: Timestamp,
-    // val comNum: Int,
-    // val comName: String,
-    // val comTime: String,
-    // val comMenu: String,
-    // val comOrderCost: Int,
-    // val userName: String
+    val userName: String,
         )

@@ -1,6 +1,7 @@
 package keeper.project.et.dao
 
 import keeper.project.et.dto.request.post.UploadModifyPostDTO
+import keeper.project.et.dto.request.post.comment.UploadModifyCommentDTO
 import keeper.project.et.dto.response.post.GetPostCategoryDTO
 import keeper.project.et.dto.response.post.GetSomePostDTO
 import org.springframework.dao.DataAccessException
@@ -12,16 +13,17 @@ import org.springframework.jdbc.core.RowMapper
 class PostDAO : SuperDAO() {
     fun uploadPostInfo(uploadModifyPostDTO: UploadModifyPostDTO): Any {
         val values =
-            "'${uploadModifyPostDTO.userID}', ${uploadModifyPostDTO.postNum}, '${uploadModifyPostDTO.nameStore}', ${uploadModifyPostDTO.postCategory}, '${uploadModifyPostDTO.postTitle}', '${uploadModifyPostDTO.postContent}', '${uploadModifyPostDTO.postURL}', ${uploadModifyPostDTO.costOrderMin}, ${uploadModifyPostDTO.costOrderRemain}, ${1}"
+            "'${uploadModifyPostDTO.userID}', ${uploadModifyPostDTO.postNum}, '${uploadModifyPostDTO.nameStore}', ${uploadModifyPostDTO.postCategory}, '${uploadModifyPostDTO.postTitle}', '${uploadModifyPostDTO.postContent}', '${uploadModifyPostDTO.postURL}', ${uploadModifyPostDTO.costOrderMin}, ${uploadModifyPostDTO.costOrderRemain}, ${1}, '${uploadModifyPostDTO.userName}'"
 
         val sql =
-            "insert into posts (user_id, post_num, name_store, post_category, post_title, post_content, post_url, cost_order_min, cost_order_remain, post_state) values ($values)"
+            "insert into posts (user_id, post_num, name_store, post_category, post_title, post_content, post_url, cost_order_min, cost_order_remain, post_state, user_name) values ($values)"
 
         return try {
             val result = db.update(sql)!!
             result
+
         } catch (e: Exception) {
-            throw(e)
+            e
         }
     }
 
@@ -30,7 +32,6 @@ class PostDAO : SuperDAO() {
             val sql = "delete from posts where post_num = ${postNum};"
             val result = db.update(sql)!!
             result
-
         } catch (e: DataAccessException) {
             throw(e)
         }
@@ -59,7 +60,8 @@ class PostDAO : SuperDAO() {
                 rs.getString("post_url"),
                 rs.getInt("cost_order_min"),
                 rs.getInt("cost_order_remain"),
-                rs.getInt("post_state")
+                rs.getInt("post_state"),
+                rs.getString("user_name")
             )
         }
 
@@ -84,7 +86,7 @@ class PostDAO : SuperDAO() {
     }
 
     fun getSomePost(postNum: Int): Any {
-        val mapper = RowMapper<GetSomePostDTO> { rs, _ ->
+        val postMapper = RowMapper<GetSomePostDTO> { rs, _ ->
             GetSomePostDTO(
                 rs.getInt("post_num"),
                 rs.getString("name_store"),
@@ -95,13 +97,31 @@ class PostDAO : SuperDAO() {
                 rs.getInt("cost_order_min"),
                 rs.getInt("cost_order_remain"),
                 rs.getInt("post_state"),
-                rs.getTimestamp("create_date")
+                rs.getTimestamp("create_date"),
+                rs.getString("user_name")
             )
         }
-        return try {
-            val result = db.query("select * from posts where post_num=${postNum}", mapper)
 
-            result
+        val commentMapper = RowMapper<UploadModifyCommentDTO> { rs, _ ->
+            UploadModifyCommentDTO(
+                rs.getInt("com_num"),
+                rs.getInt("post_num"),
+                rs.getString("com_name"),
+                rs.getString("com_menu"),
+                rs.getInt("com_order_cost"),
+                rs.getString("com_content"),
+                rs.getTimestamp("create_date"),
+            )
+        }
+
+        return try {
+            val post = db.query("select * from posts where post_num=${postNum}", postMapper)
+            val com = db.query("select * from post_comment where post_num=${postNum}", commentMapper)
+            val postComHash = HashMap<String, Any>()
+            postComHash.put("content", post)
+            postComHash.put("comment", com)
+            postComHash
+
         } catch (e: DataAccessException) {
             throw(e)
         }

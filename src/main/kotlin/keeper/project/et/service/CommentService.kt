@@ -1,25 +1,25 @@
 package keeper.project.et.service
 
-import keeper.project.et.dao.PostDAO
+import keeper.project.et.dao.CommentDAO
 import keeper.project.et.dto.DataSet
 import keeper.project.et.dto.Message
-import keeper.project.et.dto.request.post.UploadModifyPostDTO
+import keeper.project.et.dto.request.post.comment.UploadModifyCommentDTO
 import keeper.project.et.dto.response.post.PostDataSetDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class PostService {
+class CommentService {
 
     @Autowired
-    lateinit var postDAO: PostDAO
+    lateinit var commentDAO: CommentDAO
     val message = { result : String ->
         listOf(Message(result))
     }
 
-    fun postUploadService(uploadModifyPostDTO: UploadModifyPostDTO): ResponseEntity<Any> {
-        val resultObject = postDAO.uploadPostInfo(uploadModifyPostDTO)
+    fun commentUploadService(uploadModifyCommentDTO: UploadModifyCommentDTO): ResponseEntity<Any> {
+        val resultObject = commentDAO.uploadCommentInfo(uploadModifyCommentDTO)
 
         return if (resultObject == 1) {
             ResponseEntity.status(200).body(DataSet(message("success")))
@@ -28,41 +28,33 @@ class PostService {
         }
     }
 
-    fun postDeleteService(value: Int): ResponseEntity<Any> {
-        val resultObject = postDAO.deletePostInfo(value)
+    fun commentModifyService(uploadModifyCommentDTO: UploadModifyCommentDTO): ResponseEntity<Any> {
+        val resultObject = commentDAO.modifyCommentInfo(uploadModifyCommentDTO)
 
         return if (resultObject == 1) {
             ResponseEntity.status(200).body(DataSet(message("success")))
-        }
-        else{
+        } else {
             ResponseEntity.status(400).body(DataSet(message("fail")))
         }
     }
 
-    fun postModifyService(uploadModifyPostDTO: UploadModifyPostDTO): ResponseEntity<Any> {
-        return try {
-            postDAO.modifyPostInfo(uploadModifyPostDTO)
+    fun commentDeleteService(com: Int, post: Int): ResponseEntity<Any>{
+        val resultObject = commentDAO.deleteCommentInfo(com, post)
+
+        return if (resultObject == 1) {
             ResponseEntity.status(200).body(DataSet(message("success")))
-        } catch (e: Exception) {
+        } else {
             ResponseEntity.status(400).body(DataSet(message("fail")))
         }
     }
 
-    fun getAllPostService(): ResponseEntity<Any> {
-        return try {
-            val resultObject = postDAO.getAllPost()
+    fun commentCancelService(post: Int): ResponseEntity<Any> {
+        return  try {
+            val resultObject = commentDAO.cancelCommentInfo(post)
             ResponseEntity.status(200).body(PostDataSetDTO(resultObject))
         } catch (e: Exception) {
-            ResponseEntity.status(400). body(DataSet(message("fail")))
-        }
-    }
-
-    fun getSomePostService(postNum: Int): ResponseEntity<Any> {
-        return try {
-            val result = postDAO.getSomePost(postNum)
-            ResponseEntity.status(200).body(PostDataSetDTO(result))
-        } catch (e: Exception) {
             ResponseEntity.status(400).body(DataSet(message("fail")))
         }
+        val resultObject = commentDAO.cancelCommentInfo(post)
     }
 }

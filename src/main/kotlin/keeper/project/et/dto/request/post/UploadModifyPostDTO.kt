@@ -10,5 +10,6 @@ data class UploadModifyPostDTO (
     val postURL: String,
     val costOrderMin: Int,
     val costOrderRemain: Int,
-    val postState: Int
+    val postState: Int,
+    val userName: String
 )
