@@ -19,7 +19,7 @@ class PostDAO : SuperDAO() {
             "insert into posts (user_id, post_num, name_store, post_category, post_title, post_content, post_url, cost_order_min, cost_order_remain, post_state, user_name) values ($values)"
 
         return try {
-            val result = db.update(sql)!!
+            val result = db.update(sql)
             result
 
         } catch (e: Exception) {
@@ -30,7 +30,7 @@ class PostDAO : SuperDAO() {
     fun deletePostInfo(postNum: Int): Int {
         return try {
             val sql = "delete from posts where post_num = ${postNum};"
-            val result = db.update(sql)!!
+            val result = db.update(sql)
             result
         } catch (e: DataAccessException) {
             throw(e)
@@ -41,7 +41,7 @@ class PostDAO : SuperDAO() {
         return try {
             val sql =
                 "update posts set name_store='${uploadModifyPostDTO.nameStore}', post_category=${uploadModifyPostDTO.postCategory}, post_title='${uploadModifyPostDTO.postTitle}', post_content='${uploadModifyPostDTO.postContent}', post_url='${uploadModifyPostDTO.postURL}', cost_order_min=${uploadModifyPostDTO.costOrderMin}, cost_order_remain=${uploadModifyPostDTO.costOrderRemain} where post_num=${uploadModifyPostDTO.postNum}"
-            val result = db.update(sql)!!
+            val result = db.update(sql)
             result
         } catch (e: DataAccessException) {
             throw(e)
