@@ -13,7 +13,7 @@ class CommentDAO : SuperDAO() {
         val sql =
             "insert into post_comment (com_num, post_num, com_name, com_menu, com_order_cost, com_content) values ($values)"
         return try {
-            val result = db.update(sql)!!
+            val result = db.update(sql)
             result
         } catch (e: Exception) {
             throw (e)
@@ -24,7 +24,7 @@ class CommentDAO : SuperDAO() {
         val sql =
             "update post_comment set com_menu = '${uploadModifyCommentDTO.comMenu}', com_order_cost = ${uploadModifyCommentDTO.comOrderCost}, com_content = '${uploadModifyCommentDTO.comContent}' where com_num = ${uploadModifyCommentDTO.comNum} and post_num = ${uploadModifyCommentDTO.postNum}"
         return try {
-            val result = db.update(sql)!!
+            val result = db.update(sql)
             result
         } catch (e: DataAccessException) {
             throw(e)
@@ -35,7 +35,7 @@ class CommentDAO : SuperDAO() {
         val sql =
             "delete from post_comment where post_num = $post and com_num = $com"
         return try {
-            val result = db.update(sql)!!
+            val result = db.update(sql)
             result
         } catch (e: DataAccessException) {
             throw (e)
