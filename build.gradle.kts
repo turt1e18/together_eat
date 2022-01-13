@@ -24,6 +24,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-mail")
 	implementation("com.github.maricn:logback-slack-appender:1.6.1")
+	implementation(group="ch.qos.logback",name="logback-core",version="1.2.9")
+	implementation(group="ch.qos.logback",name="logback-classic",version="1.2.9")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
