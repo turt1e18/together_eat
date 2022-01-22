@@ -55,6 +55,5 @@ class CommentService {
         } catch (e: Exception) {
             ResponseEntity.status(400).body(DataSet(message("fail")))
         }
-        val resultObject = commentDAO.cancelCommentInfo(post)
     }
 }

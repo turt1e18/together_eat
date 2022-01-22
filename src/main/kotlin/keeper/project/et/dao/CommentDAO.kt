@@ -4,19 +4,20 @@ import keeper.project.et.dto.request.post.comment.UploadModifyCommentDTO
 import org.springframework.dao.DataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
+import java.sql.SQLException
 
 @Repository
 class CommentDAO : SuperDAO() {
     fun uploadCommentInfo(uploadModifyCommentDTO: UploadModifyCommentDTO): Any {
         val values =
-            "${uploadModifyCommentDTO.comNum}, ${uploadModifyCommentDTO.postNum}, '${uploadModifyCommentDTO.comName}', '${uploadModifyCommentDTO.comMenu}', ${uploadModifyCommentDTO.comOrderCost}, '${uploadModifyCommentDTO.comContent}'"
+            "${uploadModifyCommentDTO.postNum}, '${uploadModifyCommentDTO.comName}', '${uploadModifyCommentDTO.comMenu}', ${uploadModifyCommentDTO.comOrderCost}, '${uploadModifyCommentDTO.comContent}'"
         val sql =
-            "insert into post_comment (com_num, post_num, com_name, com_menu, com_order_cost, com_content) values ($values)"
+            "insert into post_comment (post_num, com_name, com_menu, com_order_cost, com_content) values ($values)"
         return try {
             val result = db.update(sql)!!
             result
         } catch (e: Exception) {
-            throw (e)
+            e
         }
     }
 

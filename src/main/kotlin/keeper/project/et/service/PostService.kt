@@ -40,10 +40,11 @@ class PostService {
     }
 
     fun postModifyService(uploadModifyPostDTO: UploadModifyPostDTO): ResponseEntity<Any> {
-        return try {
-            postDAO.modifyPostInfo(uploadModifyPostDTO)
+        val resultObject = postDAO.modifyPostInfo(uploadModifyPostDTO)
+
+        return if (resultObject == 1) {
             ResponseEntity.status(200).body(DataSet(message("success")))
-        } catch (e: Exception) {
+        } else{
             ResponseEntity.status(400).body(DataSet(message("fail")))
         }
     }
