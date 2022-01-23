@@ -52,7 +52,7 @@ class PostService {
     fun getAllPostService(): ResponseEntity<Any> {
         return try {
             val resultObject = postDAO.getAllPost()
-            ResponseEntity.status(200).body(PostDataSetDTO(resultObject))
+            ResponseEntity.status(200).body(DataSet(listOf(resultObject)))
         } catch (e: Exception) {
             ResponseEntity.status(400). body(DataSet(message("fail")))
         }
