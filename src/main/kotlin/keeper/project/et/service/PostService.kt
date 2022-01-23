@@ -60,8 +60,8 @@ class PostService {
 
     fun getSomePostService(postNum: Int): ResponseEntity<Any> {
         return try {
-            val result = postDAO.getSomePost(postNum)
-            ResponseEntity.status(200).body(PostDataSetDTO(result))
+            val resultObject = postDAO.getSomePost(postNum)
+            ResponseEntity.status(200).body(DataSet(listOf(resultObject)))
         } catch (e: Exception) {
             ResponseEntity.status(400).body(DataSet(message("fail")))
         }
