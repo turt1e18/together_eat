@@ -11,14 +11,15 @@ class MailController {
     @Autowired
     lateinit var mailService: MailService
 
-    @PostMapping("/send")
-    fun sendMailController(@RequestBody mailDTO: MailDTO): ResponseEntity<Any> {
-       return mailService.sendMail(mailDTO)
+    @GetMapping("/email/send")
+    fun sendMailController(@RequestParam userEmail: String): ResponseEntity<Any> {
+        val mailDTO = MailDTO(userEmail)
+        return mailService.sendMail(mailDTO)
     }
 
-    @GetMapping("/check/mail/code")
-    fun checkMailCodeController(@RequestParam("userEmail")userEmail:String): ResponseEntity<Any> {
-        return mailService.checkOTPCode(userEmail)
+    @GetMapping("/email/check")
+    fun checkMailCodeController(@RequestParam("userEmail")userEmail:String, @RequestParam("code")code:String): ResponseEntity<Any> {
+        return mailService.checkOTPCode(userEmail,code)
     }
 
 }
