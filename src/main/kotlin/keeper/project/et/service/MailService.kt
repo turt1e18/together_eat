@@ -2,6 +2,7 @@ package keeper.project.et.service
 
 import keeper.project.et.dao.AuthDAO
 import keeper.project.et.dao.MailDAO
+import keeper.project.et.dto.BooleanResponse
 import keeper.project.et.dto.DataSet
 import keeper.project.et.dto.MailDTO
 import keeper.project.et.dto.Message
@@ -21,9 +22,9 @@ class MailService(val emailSender: JavaMailSender) {
     lateinit var mailDAO: MailDAO
 
     @Autowired
-    lateinit var authDAO : AuthDAO
+    lateinit var authDAO: AuthDAO
 
-    val message = { result : String ->
+    val message = { result: String ->
         listOf(Message(result))
     }
 
@@ -43,7 +44,7 @@ class MailService(val emailSender: JavaMailSender) {
     fun setupMessage(helper: MimeMessageHelper, mail: MailDTO) {
         helper.setTo(mail.to)
         helper.setSubject(mail.subject)
-        helper.setText(mail.text.toString())
+        helper.setText(mail.text)
     }
 
     fun sendMail(mail: MailDTO): ResponseEntity<Any> {
@@ -57,16 +58,20 @@ class MailService(val emailSender: JavaMailSender) {
             emailSender.send(msg)
             mailDAO.loggingOTPCode(mail.to, mail.text)
 
-            ResponseEntity.status(200).body(DataSet(message("Success")))
+            ResponseEntity.status(200).body(DataSet(message("success")))
         } catch (e: RuntimeException) {
             ResponseEntity.status(500).body(DataSet(message("fail")))
         }
     }
 
-    fun checkOTPCode(mail: String): ResponseEntity<Any> {
+    fun checkOTPCode(mail: String, otp: String): ResponseEntity<Any> {
         val code = CodeDTO(mailDAO.getLastOTPCode(mail))
 
-        return ResponseEntity.status(200).body(DataSet(listOf(code)))
+        return if (code.code == otp)
+            ResponseEntity.status(200).body(DataSet(listOf(BooleanResponse(true))))
+        else
+            ResponseEntity.status(400).body(DataSet(listOf(BooleanResponse(false))))
+
     }
 
 }

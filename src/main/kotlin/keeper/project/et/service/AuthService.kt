@@ -44,7 +44,7 @@ class AuthService {
     fun signUpService(signUpDTO: SignUpDTO): ResponseEntity<Any> {
         return try {
             signUpDTO.userPW = encoder.encode(signUpDTO.userPW)
-            val result = authDAO.setUserInfo(signUpDTO).toString()
+            authDAO.setUserInfo(signUpDTO)
             ResponseEntity.status(200).body(DataSet(message("success")))
         } catch (e: Exception) {
             ResponseEntity.status(400).body(DataSet(message("fail")))

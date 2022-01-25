@@ -63,7 +63,7 @@ class LoginController {
      *
      */
 
-    @GetMapping("/find/id/email")
+    @GetMapping("/users/find/id")
     fun findIDWithEmailController(@RequestParam("userEmail")userEmail: String): ResponseEntity<Any> {
         return authService.findIDWithEmail(userEmail)
     }
