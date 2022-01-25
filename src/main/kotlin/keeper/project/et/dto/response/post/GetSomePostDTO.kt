@@ -12,6 +12,6 @@ data class GetSomePostDTO (
     val costOrderMin: Int,
     val costOrderRemain: Int,
     val postState: Int,
-    val postUptime: Timestamp,
+    val postUpTime: Timestamp,
     val userName: String,
         )
