@@ -1,5 +1,6 @@
 package keeper.project.et.dao
 
+import keeper.project.et.dto.request.post.GetAllPostDTO
 import keeper.project.et.dto.request.post.UploadModifyPostDTO
 import keeper.project.et.dto.request.post.comment.UploadModifyCommentDTO
 import keeper.project.et.dto.response.post.GetPostCategoryDTO
@@ -13,10 +14,10 @@ import org.springframework.jdbc.core.RowMapper
 class PostDAO : SuperDAO() {
     fun uploadPostInfo(uploadModifyPostDTO: UploadModifyPostDTO): Any {
         val values =
-            "'${uploadModifyPostDTO.userID}', ${uploadModifyPostDTO.postNum}, '${uploadModifyPostDTO.nameStore}', ${uploadModifyPostDTO.postCategory}, '${uploadModifyPostDTO.postTitle}', '${uploadModifyPostDTO.postContent}', '${uploadModifyPostDTO.postURL}', ${uploadModifyPostDTO.costOrderMin}, ${uploadModifyPostDTO.costOrderRemain}, ${1}, '${uploadModifyPostDTO.userName}'"
+            "'${uploadModifyPostDTO.userID}', '${uploadModifyPostDTO.nameStore}', ${uploadModifyPostDTO.postCategory}, '${uploadModifyPostDTO.postTitle}', '${uploadModifyPostDTO.postContent}', '${uploadModifyPostDTO.postURL}', ${uploadModifyPostDTO.costOrderMin}, ${uploadModifyPostDTO.costOrderRemain}, ${1}, '${uploadModifyPostDTO.userName}'"
 
         val sql =
-            "insert into posts (user_id, post_num, name_store, post_category, post_title, post_content, post_url, cost_order_min, cost_order_remain, post_state, user_name) values ($values)"
+            "insert into posts (user_id, name_store, post_category, post_title, post_content, post_url, cost_order_min, cost_order_remain, post_state, user_name) values ($values)"
 
         return try {
             val result = db.update(sql)
@@ -49,19 +50,18 @@ class PostDAO : SuperDAO() {
     }
 
     fun getAllPost(): Any {
-        val postMapper = RowMapper<UploadModifyPostDTO> { rs, _ ->
-            UploadModifyPostDTO(
+        val postMapper = RowMapper<GetAllPostDTO> { rs, _ ->
+            GetAllPostDTO(
                 rs.getString("user_id"),
                 rs.getInt("post_num"),
                 rs.getString("name_store"),
                 rs.getInt("post_category"),
                 rs.getString("post_title"),
                 rs.getString("post_content"),
-                rs.getString("post_url"),
                 rs.getInt("cost_order_min"),
                 rs.getInt("cost_order_remain"),
                 rs.getInt("post_state"),
-                rs.getString("user_name")
+                rs.getTimestamp("create_date")
             )
         }
 

@@ -40,10 +40,11 @@ class PostService {
     }
 
     fun postModifyService(uploadModifyPostDTO: UploadModifyPostDTO): ResponseEntity<Any> {
-        return try {
-            postDAO.modifyPostInfo(uploadModifyPostDTO)
+        val resultObject = postDAO.modifyPostInfo(uploadModifyPostDTO)
+
+        return if (resultObject == 1) {
             ResponseEntity.status(200).body(DataSet(message("success")))
-        } catch (e: Exception) {
+        } else{
             ResponseEntity.status(400).body(DataSet(message("fail")))
         }
     }
@@ -51,7 +52,7 @@ class PostService {
     fun getAllPostService(): ResponseEntity<Any> {
         return try {
             val resultObject = postDAO.getAllPost()
-            ResponseEntity.status(200).body(PostDataSetDTO(resultObject))
+            ResponseEntity.status(200).body(DataSet(listOf(resultObject)))
         } catch (e: Exception) {
             ResponseEntity.status(400). body(DataSet(message("fail")))
         }
@@ -59,8 +60,8 @@ class PostService {
 
     fun getSomePostService(postNum: Int): ResponseEntity<Any> {
         return try {
-            val result = postDAO.getSomePost(postNum)
-            ResponseEntity.status(200).body(PostDataSetDTO(result))
+            val resultObject = postDAO.getSomePost(postNum)
+            ResponseEntity.status(200).body(DataSet(listOf(resultObject)))
         } catch (e: Exception) {
             ResponseEntity.status(400).body(DataSet(message("fail")))
         }
