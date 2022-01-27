@@ -8,9 +8,6 @@ data class GetAllPostDTO (
     val nameStore: String,
     val postCategory: Int,
     val postTitle: String,
-    val postContent: String,
-    val costOrderMin: Int,
-    val costOrderRemain: Int,
     val postState: Int,
     val postUpTime: Timestamp
 )

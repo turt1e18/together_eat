@@ -50,16 +50,13 @@ class PostDAO : SuperDAO() {
     }
 
     fun getAllPost(): Any {
-        val postMapper = RowMapper<GetAllPostDTO> { rs, _ ->
+        val postMapper = RowMapper<Any> { rs, _ ->
             GetAllPostDTO(
                 rs.getString("user_id"),
                 rs.getInt("post_num"),
                 rs.getString("name_store"),
                 rs.getInt("post_category"),
                 rs.getString("post_title"),
-                rs.getString("post_content"),
-                rs.getInt("cost_order_min"),
-                rs.getInt("cost_order_remain"),
                 rs.getInt("post_state"),
                 rs.getTimestamp("create_date")
             )
@@ -76,8 +73,8 @@ class PostDAO : SuperDAO() {
             val poList = db.query("select * from posts", postMapper)
             val cate = db.query("select * from category", categoryMapper)
             val postHash = HashMap<String, Any>()
-            postHash.put("category", cate)
-            postHash.put("postList", poList)
+            postHash["category"] = cate
+            postHash["postList"] = poList
             postHash
 
         } catch (e: DataAccessException) {
@@ -118,8 +115,8 @@ class PostDAO : SuperDAO() {
             val post = db.query("select * from posts where post_num=${postNum}", postMapper)
             val com = db.query("select * from post_comment where post_num=${postNum}", commentMapper)
             val postComHash = HashMap<String, Any>()
-            postComHash.put("content", post)
-            postComHash.put("comment", com)
+            postComHash["content"] = post
+            postComHash["comment"] = com
             postComHash
 
         } catch (e: DataAccessException) {
