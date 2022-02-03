@@ -1,6 +1,6 @@
 package keeper.project.et.dao
 
-import keeper.project.et.dto.request.post.GetAllPostDTO
+import keeper.project.et.dto.response.post.GetAllPostDTO
 import keeper.project.et.dto.request.post.UploadModifyPostDTO
 import keeper.project.et.dto.request.post.comment.UploadModifyCommentDTO
 import keeper.project.et.dto.response.post.GetPostCategoryDTO
@@ -52,13 +52,12 @@ class PostDAO : SuperDAO() {
     fun getAllPost(): Any {
         val postMapper = RowMapper<Any> { rs, _ ->
             GetAllPostDTO(
-                rs.getString("user_id"),
                 rs.getInt("post_num"),
-                rs.getString("name_store"),
                 rs.getInt("post_category"),
+                rs.getString("name_store"),
                 rs.getString("post_title"),
                 rs.getInt("post_state"),
-                rs.getTimestamp("create_date")
+                rs.getTimestamp("create_date"),
             )
         }
 
@@ -86,28 +85,31 @@ class PostDAO : SuperDAO() {
         val postMapper = RowMapper<GetSomePostDTO> { rs, _ ->
             GetSomePostDTO(
                 rs.getInt("post_num"),
+                rs.getString("user_id"),
                 rs.getString("name_store"),
-                rs.getInt("post_category"),
                 rs.getString("post_title"),
-                rs.getString("post_content"),
-                rs.getString("post_url"),
-                rs.getInt("cost_order_min"),
-                rs.getInt("cost_order_remain"),
                 rs.getInt("post_state"),
                 rs.getTimestamp("create_date"),
+                rs.getInt("post_category"),
+                rs.getString("post_content"),
+                rs.getInt("cost_order_min"),
+                rs.getInt("cost_order_remain"),
+                rs.getString("post_url"),
                 rs.getString("user_name")
             )
         }
 
         val commentMapper = RowMapper<UploadModifyCommentDTO> { rs, _ ->
+            val cm = rs.getString("com_menu").split(", ")
+            val coc = rs.getString("com_order_cost").split(", ").map { it.toInt() }
             UploadModifyCommentDTO(
                 rs.getInt("com_num"),
                 rs.getInt("post_num"),
                 rs.getString("com_name"),
-                rs.getString("com_menu"),
-                rs.getInt("com_order_cost"),
-                rs.getString("com_content"),
+                cm,
+                coc,
                 rs.getTimestamp("create_date"),
+                rs.getString("user_id")
             )
         }
 
